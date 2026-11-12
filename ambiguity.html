@@ -6,19 +6,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:12px 16px;line-height:1.4;max-width:100%;margin:0 auto}
+body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20px 28px;line-height:1.5;max-width:100%;margin:0 auto}
 
-.groups{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
-.group{background:#f7f7f5;border:1px solid #ecedea;border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:8px;min-height:84px;transition:border-color .15s,background .15s}
+.groups{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.group{background:#f7f7f5;border:1px solid #ecedea;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:12px;min-height:clamp(260px,40vh,460px);transition:border-color .15s,background .15s}
 .group.over{border-color:#50D0ED;background:rgba(128,234,255,.12)}
-.group-title{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%);color:#0A3D4F;font-size:14px;font-weight:700;text-align:center;padding:6px 8px;border-radius:8px}
-.drop{display:flex;flex-direction:column;gap:8px;flex:1}
+.group-title{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%);color:#0A3D4F;font-size:18px;font-weight:700;text-align:center;padding:12px 12px;border-radius:8px}
+.drop{display:flex;flex-direction:column;gap:10px;flex:1}
 
-.pool{background:#f7f7f5;border:2px dashed #ecedea;border-radius:10px;padding:8px;margin-bottom:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;transition:border-color .15s,background .15s}
+.pool{background:#f7f7f5;border:2px dashed #ecedea;border-radius:10px;padding:14px;margin-bottom:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;transition:border-color .15s,background .15s}
 .pool.over{border-color:#50D0ED;background:rgba(128,234,255,.1)}
 .pool.is-empty{display:none}
 
-.card{display:flex;align-items:flex-start;gap:8px;background:#fff;border:1px solid #ecedea;border-radius:10px;padding:8px 10px;font-size:13px;font-weight:500;color:#333;line-height:1.35;cursor:grab;user-select:none;-webkit-user-select:none;transition:box-shadow .15s,border-color .15s,opacity .15s}
+.card{display:flex;align-items:flex-start;gap:12px;background:#fff;border:1px solid #ecedea;border-radius:10px;padding:14px 16px;font-size:16px;font-weight:500;color:#333;line-height:1.45;cursor:grab;user-select:none;-webkit-user-select:none;transition:box-shadow .15s,border-color .15s,opacity .15s}
 .card:hover{border-color:#80EAFF;box-shadow:0 2px 8px rgba(80,208,237,.25)}
 .card.selected{border-color:#50D0ED;box-shadow:0 0 0 3px rgba(128,234,255,.5)}
 .card.dragging{opacity:.4}
@@ -26,25 +26,26 @@ body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:12
 .card.wrong{border-color:#EF4444;background:#FEF2F2;cursor:default}
 .card.locked{cursor:default}
 .card.locked:hover{box-shadow:none}
-.card-num{width:22px;height:22px;border-radius:50%;background:#80EAFF;color:#0A3D4F;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card-num{width:28px;height:28px;border-radius:50%;background:#80EAFF;color:#0A3D4F;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .card.correct .card-num{background:#10B981;color:#fff}
 .card.wrong .card-num{background:#EF4444;color:#fff}
 
-.actions{display:flex;gap:10px;margin-bottom:10px}
-.btn{font-family:inherit;font-size:18px;font-weight:700;padding:10px;border-radius:10px;border:none;cursor:pointer;flex:1;transition:opacity .15s}
+.actions{display:flex;gap:10px;margin-bottom:20px}
+.btn{font-family:inherit;font-size:18px;font-weight:700;padding:14px;border-radius:10px;border:none;cursor:pointer;flex:1;transition:opacity .15s}
 .btn-primary{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%);color:#0A3D4F}
 .btn-primary:disabled{background:#f4f4f3;color:#aaa;cursor:not-allowed}
 .btn-secondary{background:#f4f4f3;color:#333;border:1px solid #ecedea}
 .hidden{display:none!important}
 
-.score{font-size:14px;font-weight:700;margin-bottom:6px;color:#333}
-.feedback{background:#f7f7f5;border-left:4px solid #80EAFF;padding:10px 14px;border-radius:0 10px 10px 0;font-size:14px;font-weight:500;color:#333;line-height:1.45}
-.feedback p{margin-bottom:8px}
+.score{font-size:16px;font-weight:700;margin-bottom:10px;color:#333}
+.feedback{background:#f7f7f5;border-left:4px solid #80EAFF;padding:18px 22px;border-radius:0 10px 10px 0;font-size:18px;font-weight:500;color:#333;line-height:1.6}
+.feedback p{margin-bottom:10px}
 .feedback p:last-child{margin-bottom:0}
 .feedback.all-ok{border-left-color:#10B981}
 
 @media (max-width:620px){
   .groups,.pool{grid-template-columns:1fr}
+  .group{min-height:140px}
 }
 </style>
 </head>
@@ -75,7 +76,7 @@ body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:12
 <script>
 var CARDS=[
   {id:1,group:'find',text:'The team assumes the tool connects to email and calendar, but no one has checked.'},
-  {id:2,group:'find',text:'What the director means by \u201crollout\u201d: a trial in one team or a move for all teams'},
+  {id:2,group:'find',text:'What the director means by “rollout”: a trial in one team or a move for all teams'},
   {id:3,group:'find',text:'What teams that have worked with similar tools know about the most common difficulties'},
   {id:4,group:'try',text:'Whether people will log requests in the tool or keep writing in chat'},
   {id:5,group:'try',text:'Whether two employees can log routine requests without help by the end of a one-week trial'},
