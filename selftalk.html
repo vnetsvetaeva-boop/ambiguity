@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20px 28px;line-height:1.5;max-width:100%;margin:0 auto}
+
+.list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.item{position:relative;display:flex;align-items:center;gap:14px;background:#f7f7f5;border:1px solid #ecedea;border-radius:10px;padding:14px 16px;font-size:18px;font-weight:500;color:#333;line-height:1.45;cursor:pointer;user-select:none;-webkit-user-select:none;transition:border-color .15s,background .15s,box-shadow .15s}
+.item:hover{border-color:#80EAFF;box-shadow:0 2px 8px rgba(80,208,237,.25)}
+.item input{position:absolute;opacity:0;pointer-events:none}
+.box{width:26px;height:26px;border-radius:7px;border:2px solid #c9cbc6;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.box svg{width:16px;height:16px;opacity:0;transition:opacity .1s}
+.item.on{border-color:#50D0ED;background:rgba(128,234,255,.15)}
+.item.on .box{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%);border-color:#50D0ED}
+.item.on .box svg{opacity:1}
+.item input:focus-visible + .box{box-shadow:0 0 0 3px rgba(128,234,255,.6)}
+
+.btn{display:block;width:100%;font-family:inherit;font-size:18px;font-weight:700;padding:14px;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%);color:#0A3D4F;margin-bottom:20px;transition:opacity .15s}
+.btn:hover{opacity:.9}
+
+.ideas{display:flex;flex-direction:column;gap:10px}
+.idea{background:#f7f7f5;border-left:4px solid #80EAFF;padding:16px 22px;border-radius:0 10px 10px 0}
+.idea-title{font-size:14px;font-weight:700;color:#0E7490;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.idea-text{font-size:18px;font-weight:500;color:#333;line-height:1.6}
+.idea-rows{display:flex;flex-direction:column;gap:12px;margin-top:4px}
+.idea-label{font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px}
+.idea-row .idea-text{font-size:16px;line-height:1.55}
+.idea-step{background:#ECFDF5;border-radius:8px;padding:12px 14px}
+.idea-step .idea-label{color:#059669}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="list" id="list"></div>
+
+<button class="btn" id="show">Show ideas</button>
+
+<div class="ideas hidden" id="ideas"></div>
+
+<script>
+var STATEMENTS=[
+  '“There’s no time for details. Let’s go.”',
+  '“I need certainty before I tell anyone anything.”',
+  '“Questions at this stage only slow us down.”',
+  '“One more report will make it clear.”',
+  '“People will figure it out as they go.”',
+  '“If I start now, I may have to redo it.”'
+];
+var WAIT=[2,4,6];   // waiting
+var RUSH=[1,3,5];   // moving ahead fast
+
+var IDEAS={
+  wait:{title:'If statements 2, 4 or 6 resonated',
+        text:'Choose one low-impact, reversible decision. Identify what you need to know before taking the next step and what you can learn afterwards. Take that step, then review whether waiting for more information would have changed it.',
+        risk:'Waiting can quietly turn into a decision by default: the window closes, other people stall, and more information still does not feel like enough.',
+        plan:'Decide before you start gathering what “enough” looks like and the date you will act either way. Note which parts of the decision can be undone.',
+        step:'Today, write down the one thing you need to know before moving and the date you will take the first step, whatever you have learned by then.'},
+  rush:{title:'If statements 1, 3 or 5 resonated',
+        text:'Before your next start, ask one person who will do the work what they need to know to begin. See whether the answer shows an item you could find out first.',
+        risk:'Starting without a shared picture can mean rework later: people begin from different assumptions, and the questions you skipped come back as surprises.',
+        plan:'Leave room for early questions, for example a short checkpoint after the first step, and name who owns any open item.',
+        step:'After your next kick-off, put a 10-minute checkpoint in the calendar for the day after the first step and ask the team: what is still unclear?'},
+  both:{title:'If you recognised yourself in both groups',
+        text:'This is common, and the lean often depends on the topic. Start with the phrase that resonated most.'},
+  none:{title:'If none of the phrases resonated',
+        text:'Choose a situation in which keeping a balance is especially hard for you, for example when a deadline is close or the stakes are high, and use it on the next screen.'}
+};
+
+var CHECK_SVG='<svg viewBox="0 0 16 16" fill="none" stroke="#0A3D4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg>';
+
+var listEl=document.getElementById('list');
+var ideasEl=document.getElementById('ideas');
+var showBtn=document.getElementById('show');
+var inputs=[];
+
+STATEMENTS.forEach(function(t,i){
+  var label=document.createElement('label');
+  label.className='item';
+  var input=document.createElement('input');
+  input.type='checkbox';
+  input.value=i+1;
+  var box=document.createElement('span');
+  box.className='box';
+  box.innerHTML=CHECK_SVG;
+  var text=document.createElement('span');
+  text.textContent=t;
+  label.appendChild(input);
+  label.appendChild(box);
+  label.appendChild(text);
+  input.addEventListener('change',function(){
+    label.classList.toggle('on',input.checked);
+    ideasEl.classList.add('hidden');   // selection changed: ideas must be refreshed
+  });
+  inputs.push(input);
+  listEl.appendChild(label);
+});
+
+function addIdea(key){
+  var d=document.createElement('div');
+  d.className='idea';
+  var h=document.createElement('div');
+  h.className='idea-title';
+  h.textContent=IDEAS[key].title;
+  d.appendChild(h);
+  var idea=IDEAS[key];
+  if(idea.risk){
+    var rows=document.createElement('div');
+    rows.className='idea-rows';
+    [['Experiment',idea.text,''],['Risk to watch',idea.risk,''],['Plan for',idea.plan,''],['Your next step',idea.step,'idea-step']].forEach(function(r){
+      var row=document.createElement('div');
+      row.className='idea-row '+r[2];
+      var l=document.createElement('div');
+      l.className='idea-label';
+      l.textContent=r[0];
+      var t=document.createElement('div');
+      t.className='idea-text';
+      t.textContent=r[1];
+      row.appendChild(l);
+      row.appendChild(t);
+      rows.appendChild(row);
+    });
+    d.appendChild(rows);
+  }else{
+    var p=document.createElement('div');
+    p.className='idea-text';
+    p.textContent=idea.text;
+    d.appendChild(p);
+  }
+  ideasEl.appendChild(d);
+}
+
+showBtn.addEventListener('click',function(){
+  var picked=inputs.filter(function(i){return i.checked;}).map(function(i){return parseInt(i.value,10);});
+  var hasWait=picked.some(function(n){return WAIT.indexOf(n)>-1;});
+  var hasRush=picked.some(function(n){return RUSH.indexOf(n)>-1;});
+  ideasEl.innerHTML='';
+  if(hasWait&&hasRush){addIdea('both');addIdea('wait');addIdea('rush');}
+  else if(hasWait){addIdea('wait');}
+  else if(hasRush){addIdea('rush');}
+  else{addIdea('none');}
+  ideasEl.classList.remove('hidden');
+});
+</script>
+</body>
+</html>
