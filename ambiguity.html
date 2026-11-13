@@ -41,6 +41,9 @@ body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20
 .feedback{background:#f7f7f5;border-left:4px solid #80EAFF;padding:18px 22px;border-radius:0 10px 10px 0;font-size:18px;font-weight:500;color:#333;line-height:1.6}
 .feedback p{margin-bottom:10px}
 .feedback p:last-child{margin-bottom:0}
+.fb-group{margin-bottom:18px}
+.fb-group:last-child{margin-bottom:0}
+.fb-title{font-size:14px;font-weight:700;color:#0E7490;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
 .feedback.all-ok{border-left-color:#10B981}
 
 @media (max-width:620px){
@@ -67,21 +70,31 @@ body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20
 <div id="result" class="hidden">
   <div class="score" id="score"></div>
   <div class="feedback" id="feedback">
-  <p><strong>Correct groups:</strong> cards 1–3 belong to Find out, cards 4–5 to Try out, cards 6–7 to Leave open for now.</p>
-  <p>The first card is an assumption nobody has checked, so a short question to the vendor settles it.</p>
-  <p>Other teams’ experience (card 3) can help you design the trial, but you still need to observe how your own team uses the tool (cards 4 and 5).</p>
-  <p>Cards 6 and 7 can wait because the trial does not depend on them. If either blocked the next step, you would seek a decision or escalate the dependency.</p></div>
+  <div class="fb-group">
+    <div class="fb-title">Find out: cards 1–3</div>
+    <p>The compatibility guide can tell you whether your systems are supported. The director can clarify the intended scope. Other teams can describe difficulties they have already encountered.</p>
+    <p>Checking compatibility does not prove that the connection will work in your setup. If needed, that can become a separate test.</p>
+  </div>
+  <div class="fb-group">
+    <div class="fb-title">Try out: cards 4–5</div>
+    <p>A limited trial can show which channel employees actually use and where they need help. Other teams’ experience can help you prepare, but it cannot establish how your own team will work.</p>
+  </div>
+  <div class="fb-group">
+    <div class="fb-title">Leave open for now: cards 6–7</div>
+    <p>Neither decision is needed for the initial trial. Record when you will revisit each one: expansion after reviewing the trial, and year-two costs when budget planning begins or before making a commitment that depends on them.</p>
+  </div>
+</div>
 </div>
 
 <script>
 var CARDS=[
-  {id:1,group:'find',text:'The team assumes the tool connects to email and calendar, but no one has checked.'},
-  {id:2,group:'find',text:'What the director means by “rollout”: a trial in one team or a move for all teams'},
-  {id:3,group:'find',text:'What teams that have worked with similar tools know about the most common difficulties'},
-  {id:4,group:'try',text:'Whether people will log requests in the tool or keep writing in chat'},
-  {id:5,group:'try',text:'Whether two employees can log routine requests without help by the end of a one-week trial'},
-  {id:6,group:'leave',text:'Connecting other departments (the director confirmed this will be considered after the first trial)'},
-  {id:7,group:'leave',text:'The licence budget for year two (the current trial is already funded; the year-two decision comes later)'}
+  {id:1,group:'find',text:'Whether our email and calendar systems are supported by the tool. The vendor has a compatibility guide, but nobody has checked it yet.'},
+  {id:2,group:'find',text:'What the director means by \u201crollout\u201d: an initial trial in one team or a wider launch. The brief does not specify the scope.'},
+  {id:3,group:'find',text:'What difficulties other teams encountered when introducing similar tools. Those teams are available to share their experience.'},
+  {id:4,group:'try',text:'Whether employees will use the tool for routine requests during a trial, or continue using chat.'},
+  {id:5,group:'try',text:'Which steps, if any, two employees will need help with when logging routine requests during a one-week trial.'},
+  {id:6,group:'leave',text:'Whether to connect other departments later. This decision is not needed to plan or run the initial trial.'},
+  {id:7,group:'leave',text:'The licence budget for year two. The current trial is funded, and no decision about year-two spending is needed now.'}
 ];
 var ORDER=[1,2,3,4,5,6,7];
 
